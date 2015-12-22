@@ -1,0 +1,24 @@
+{
+  "name": "boxedcode/silex-api-client-service-provider",
+  "type": "library",
+  "description": "A simple Silex API client service provider (more on silex: http://silex.sensiolabs.org/)",
+  "authors": [
+    {
+      "name": "Kamba Abudu",
+      "email": "kabudu@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "silex/silex": ">=2.0.x-dev",
+    "kriswallsmith/buzz": "v0.15"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "BoxedCode\\Silex\\Api\\": ["src/", "tests/"]
+    }
+  }
+}

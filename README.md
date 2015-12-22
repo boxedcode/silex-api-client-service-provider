@@ -1,2 +1,2 @@
-# silex-api-client-service-provider
+# Silex API Client Service Provider
 Silex Api Client Service Provider
