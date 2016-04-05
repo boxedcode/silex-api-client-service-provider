@@ -23,6 +23,16 @@ class BuzzClient implements ClientInterface
     private $baseEndpoint;
 
     /**
+     * Headers
+     *
+     * @var array
+     */
+    protected $headers = [
+        'Content-Type' => 'application/json',
+        'Connection' => 'close'
+    ];
+
+    /**
      * BuzzClient constructor.
      *
      * @param Browser $transport
@@ -44,16 +54,15 @@ class BuzzClient implements ClientInterface
     public function execute($endpoint, array $payload)
     {
         $endpoint = $this->baseEndpoint . $endpoint;
-        $response = $this->transport->post($endpoint, [
-            'Content-Type' => 'application/json',
-            'Connection' => 'close'
-        ], json_encode([
-            'meta' => [
-                'when' => date('Y-m-d H:i:s'),
-                'server' => gethostname(),
-            ],
-            'data' => $payload
-        ]));
+        $response = $this->transport->post($endpoint,
+            $this->getHeaders(),
+            json_encode([
+                'meta' => [
+                    'when' => date('Y-m-d H:i:s'),
+                    'server' => gethostname(),
+                ],
+                'data' => $payload
+            ]));
 
         return json_decode($response->getContent(), true);
     }
@@ -71,4 +80,41 @@ class BuzzClient implements ClientInterface
         return $this;
     }
 
+    /**
+     * Add a header parameter
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return ClientInterface
+     */
+    public function addHeader($name, $value)
+    {
+        $this->headers[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Set headers
+     *
+     * @param array $headers
+     * @return ClientInterface
+     */
+    public function setHeaders(array $headers)
+    {
+        $this->headers = $headers;
+
+        return $this;
+    }
+
+
+    /**
+     * Get headers
+     *
+     * @return array
+     */
+    protected function getHeaders()
+    {
+        return $this->headers;
+    }
 }

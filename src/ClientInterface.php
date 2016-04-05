@@ -25,4 +25,21 @@ interface ClientInterface
      * @return mixed
      */
     public function setBaseEndpoint($baseEndpoint);
+
+    /**
+     * Add a header parameter
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return ClientInterface
+     */
+    public function addHeader($name, $value);
+
+    /**
+     * Set headers
+     *
+     * @param array $headers
+     * @return ClientInterface
+     */
+    public function setHeaders(array $headers);
 }
