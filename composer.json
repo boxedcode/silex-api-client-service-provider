@@ -10,7 +10,7 @@
   ],
   "require": {
     "php": ">=5.5.0",
-    "silex/silex": ">=2.0.x-dev",
+    "silex/silex": ">=2.0.0",
     "kriswallsmith/buzz": "v0.15"
   },
   "require-dev": {
