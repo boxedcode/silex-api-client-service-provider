@@ -14,15 +14,20 @@ interface ClientInterface
      *
      * @param $endpoint
      * @param array $payload
+     * @param array $options
      * @return mixed
      */
-    public function execute($endpoint, array $payload);
+    public function execute(
+        $endpoint,
+        array $payload,
+        array $options = []
+    );
 
     /**
      * Set a base endpoint
      *
      * @param string $baseEndpoint
-     * @return mixed
+     * @return ClientInterface
      */
     public function setBaseEndpoint($baseEndpoint);
 
@@ -42,4 +47,12 @@ interface ClientInterface
      * @return ClientInterface
      */
     public function setHeaders(array $headers);
+
+    /**
+     * Set a global timeout for all requests
+     *
+     * @param integer $timeout
+     * @return ClientInterface
+     */
+    public function setTimeout($timeout);
 }

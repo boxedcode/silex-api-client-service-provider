@@ -25,9 +25,12 @@ class ApiClientServiceProvider implements ServiceProviderInterface
     public function register(Container $pimple)
     {
         $pimple['api.client'] = function () use ($pimple) {
-            $baseEndpoint = $pimple['base_endpoint'] ?: null;
+            $baseEndpoint = $pimple['base_endpoint'] ?: '';
+            $timeout = isset($pimple['timeout']) ? $pimple['timeout'] : null;
 
-            return $this->getClient($baseEndpoint);
+            return $this
+                ->getClient($baseEndpoint)
+                ->setTimeout($timeout);
         };
     }
 

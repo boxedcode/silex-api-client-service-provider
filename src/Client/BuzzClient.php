@@ -2,6 +2,7 @@
 
 namespace BoxedCode\Silex\Api\Client;
 
+use BoxedCode\Silex\Api\AbstractClient;
 use BoxedCode\Silex\Api\ClientInterface;
 use Buzz\Browser;
 
@@ -10,17 +11,12 @@ use Buzz\Browser;
  *
  * @package BoxedCode\Silex\Api\Client
  */
-class BuzzClient implements ClientInterface
+class BuzzClient extends AbstractClient implements ClientInterface
 {
     /**
      * @var Browser
      */
     private $transport;
-
-    /**
-     * @var string
-     */
-    private $baseEndpoint;
 
     /**
      * Headers
@@ -36,24 +32,35 @@ class BuzzClient implements ClientInterface
      * BuzzClient constructor.
      *
      * @param Browser $transport
-     * @param null|string $baseEndpoint
      */
-    public function __construct(Browser $transport, $baseEndpoint = null)
+    public function __construct(Browser $transport)
     {
         $this->transport = $transport;
-        $this->baseEndpoint = $baseEndpoint;
     }
 
     /**
      * Execute an Api request
      *
-     * @param $endpoint
+     * @param string $endpoint
      * @param array $payload
+     * @param array $options
      * @return mixed
      */
-    public function execute($endpoint, array $payload)
+    public function execute(
+        $endpoint,
+        array $payload,
+        array $options = []
+    )
     {
         $endpoint = $this->baseEndpoint . $endpoint;
+
+        // set a timeout if applicable
+        if(isset($options['timeout'])) {
+            $this->transport->getClient()->setTimeout((int)$options['timeout']);
+        } else if(isset($this->timeout)) {
+            $this->transport->getClient()->setTimeout((int)$this->timeout);
+        }
+
         $response = $this->transport->post($endpoint,
             $this->getHeaders(),
             json_encode([
@@ -67,54 +74,4 @@ class BuzzClient implements ClientInterface
         return json_decode($response->getContent(), true);
     }
 
-    /**
-     * Set a base endpoint
-     *
-     * @param string $baseEndpoint
-     * @return BuzzClient
-     */
-    public function setBaseEndpoint($baseEndpoint)
-    {
-        $this->baseEndpoint = $baseEndpoint;
-
-        return $this;
-    }
-
-    /**
-     * Add a header parameter
-     *
-     * @param string $name
-     * @param mixed $value
-     * @return ClientInterface
-     */
-    public function addHeader($name, $value)
-    {
-        $this->headers[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Set headers
-     *
-     * @param array $headers
-     * @return ClientInterface
-     */
-    public function setHeaders(array $headers)
-    {
-        $this->headers = $headers;
-
-        return $this;
-    }
-
-
-    /**
-     * Get headers
-     *
-     * @return array
-     */
-    protected function getHeaders()
-    {
-        return $this->headers;
-    }
 }
