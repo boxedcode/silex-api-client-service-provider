@@ -29,7 +29,8 @@ class ApiClientServiceProvider implements ServiceProviderInterface
             $timeout = isset($pimple['timeout']) ? $pimple['timeout'] : null;
 
             return $this
-                ->getClient($baseEndpoint)
+                ->getClient()
+                ->setBaseEndpoint($baseEndpoint)
                 ->setTimeout($timeout);
         };
     }
@@ -37,11 +38,10 @@ class ApiClientServiceProvider implements ServiceProviderInterface
     /**
      * Get an API client implementation
      *
-     * @param $baseEndpoint
      * @return BuzzClient
      */
-    protected function getClient($baseEndpoint)
+    protected function getClient()
     {
-        return new BuzzClient(new Browser(), $baseEndpoint);
+        return new BuzzClient(new Browser());
     }
 }
