@@ -11,7 +11,7 @@
   "require": {
     "php": ">=5.5.0",
     "silex/silex": ">=2.0.0",
-    "kriswallsmith/buzz": "v0.15"
+    "kriswallsmith/buzz": "v0.15.1"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*"
